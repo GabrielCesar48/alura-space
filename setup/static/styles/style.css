@@ -383,3 +383,16 @@ table {
     border: 2px solid #7B78E5;
     cursor: pointer;
 }
+
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+.alert {
+    animation: fadeOut 10s ease-out forwards;
+}
+
+

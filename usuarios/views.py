@@ -6,7 +6,7 @@ from django.contrib import auth
 
 def login(request):
     form = LoginForms() # Inicializa o formulário
-    
+
     if request.method == 'POST':
         #Lógica de Login
         # Preenche o formulário com os dados do POST
@@ -79,3 +79,7 @@ def cadastro(request):
 def logout(request):
     auth.logout(request)
     return redirect('login')
+
+
+
+
