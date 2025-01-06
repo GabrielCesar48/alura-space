@@ -1,5 +1,6 @@
-
+from django.core.exceptions import ValidationError
 from django import forms
+
 
 
 class LoginForms(forms.Form):
@@ -27,12 +28,12 @@ class LoginForms(forms.Form):
     )
 
 class CadastroForms(forms.Form):
-     nome_cadastro = forms.CharField(
-         label="Nome Completo",
+     first_name = forms.CharField(
+         label="Nome Usuario",
          widget=forms.TextInput(attrs={
              "autofocus": True,
              "class": "form-control",
-             "placeholder": "Ex.: João Silva",
+             "placeholder": "Ex.: João123",
              }),
          required=True,
          max_length=100,
@@ -45,6 +46,7 @@ class CadastroForms(forms.Form):
              "placeholder": "Ex.: joaosilva@xpto.com",
              }),
          required=True,
+         validators=[],
      )
      
      senha1 = forms.CharField(
@@ -70,6 +72,37 @@ class CadastroForms(forms.Form):
              }
          ),
          )
+     
+     from django.core.exceptions import ValidationError
+
+    
+     def clean_email(self):
+         email = self.cleaned_data.get('email', '').strip()
+         print(f"Validando email: {email}")  # Teste para ver se a validação é executada
+         
+         if not email:
+             self.add_error("email", "O campo email deve ser preenchido.")
+         
+         if '@' not in email:
+             self.add_error("email", "O email deve conter um @.")
+         
+         if '.' not in email.split('@')[-1]:
+             self.add_error("email", "O domínio do e-mail deve conter um ponto (exemplo: '.com').")
+         
+         return email
+
+     
+     def clean_first_name(self):
+         nome = self.cleaned_data['first_name']
+         if nome:
+             nome = nome.strip()
+             if ' ' in nome:
+                 self.add_error(
+                     "first_name",
+                     "O nome não pode conter espaços."
+                 )
+                 return nome
+             return nome
      def clean(self):
         # Limpa e valida os dados do formulário
         cleaned_data = super().clean()

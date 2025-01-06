@@ -40,7 +40,7 @@ def cadastro(request):
         
         if form.is_valid():  # Verifica se todos os campos do formulário são válidos
             # Recupera os dados do formulário limpo, garantindo que são válidos
-            nome = form.cleaned_data['nome_cadastro']
+            nome = form.cleaned_data['first_name']
             email = form.cleaned_data['email']
             senha = form.cleaned_data['senha1']
                 
@@ -61,7 +61,10 @@ def cadastro(request):
                 return redirect('login')  # Redireciona para a página de login após cadastro bem-sucedido.
             except Exception as e:
                 form.add_error(
-                    "nome_cadastro", f"Erro ao criar usuário: {str(e)}"  # Informa o erro ao usuário
+                    "first_name", f"Erro ao criar usuário: {str(e)}"  # Informa o erro ao usuário
+                )
+                form.add_error(
+                    "email", f"Erro ao criar usuário: {str(e)}"
                 )
                 return render(request, 'usuarios/cadastro.html', {'form': form})
             
